@@ -13,9 +13,9 @@ const tools = [
     path: "/age-calculator",
   },
   {
-    name: "Text to PDF Converter",
+    name: "Image to PDF Converter",
     desc: "Convert your text or notes into downloadable PDF files.",
-    path: "/text-to-pdf",
+    path: "/img-to-pdf",
   },
 ];
 
@@ -51,13 +51,7 @@ export default function Home() {
             </Link>
           </div>
         ))}
-      </div>
-
-      {/* Footer */}
-      <footer className="mt-16 text-center text-gray-500 text-sm">
-        © {new Date().getFullYear()} All-in-One Tools | Developed by{" "}
-        <span className="text-indigo-600 font-semibold">Boss Mamun 💪</span>
-      </footer>
+      </div>     
     </div>
   );
 }

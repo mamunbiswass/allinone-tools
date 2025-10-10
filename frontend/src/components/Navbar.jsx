@@ -11,7 +11,7 @@ export default function Navbar() {
     { name: "Home", path: "/" },
     { name: "QR Generator", path: "/qr-generator" },
     { name: "Age Calculator", path: "/age-calculator" },
-    { name: "Text → PDF", path: "/text-to-pdf" },
+    { name: "Image → PDF", path: "/img-to-pdf" },
   ];
 
   return (

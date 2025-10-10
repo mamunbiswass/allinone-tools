@@ -5,18 +5,18 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import QRGenerator from "./pages/QRGenerator";
 import AgeCalculator from "./pages/AgeCalculator";
-import TextToPdf from "./pages/TextToPdf";
+import ImageToPdf from "./pages/ImageToPdf";
 
 function App() {
   return (
     <Router>
       <Navbar />
-      <div className="pt-20">
+      <div className="pt-0">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/qr-generator" element={<QRGenerator />} />
           <Route path="/age-calculator" element={<AgeCalculator />} />
-          <Route path="/text-to-pdf" element={<TextToPdf />} />
+          <Route path="/img-to-pdf" element={<ImageToPdf />} />
         </Routes>
       </div>      
       <Footer />
