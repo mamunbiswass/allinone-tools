@@ -6,6 +6,11 @@ import Home from "./pages/Home";
 import QRGenerator from "./pages/QRGenerator";
 import AgeCalculator from "./pages/AgeCalculator";
 import ImageToPdf from "./pages/ImageToPdf";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
+import UserLogin from "./pages/UserLogin";
+import UserRegister from "./pages/UserRegister";
+
 
 function App() {
   return (
@@ -17,6 +22,11 @@ function App() {
           <Route path="/qr-generator" element={<QRGenerator />} />
           <Route path="/age-calculator" element={<AgeCalculator />} />
           <Route path="/img-to-pdf" element={<ImageToPdf />} />
+          <Route path="/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/login" element={<UserLogin />} />
+          <Route path="/register" element={<UserRegister />} />
+
         </Routes>
       </div>      
       <Footer />

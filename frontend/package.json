@@ -11,13 +11,16 @@
   },
   "dependencies": {
     "axios": "^1.12.2",
+    "framer-motion": "^12.23.24",
     "jspdf": "^3.0.3",
     "lucide-react": "^0.545.0",
     "prop-types": "^15.8.1",
     "qrcode.react": "^4.2.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router-dom": "^7.9.4"
+    "react-helmet": "^6.1.0",
+    "react-router-dom": "^7.9.4",
+    "recharts": "^3.2.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
