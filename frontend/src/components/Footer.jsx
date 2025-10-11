@@ -10,7 +10,7 @@ export default function Footer() {
           <p className="text-sm">
             © {new Date().getFullYear()} <span className="font-semibold text-white">All-in-One Tools</span> | Developed by{" "}
             <a
-              href="https://github.com/MamunTech"
+              href="https://www.linkedin.com/in/mamunbiswas/"
               target="_blank"
               rel="noreferrer"
               className="text-indigo-400 hover:text-indigo-300 font-semibold transition"

@@ -9,6 +9,7 @@ import ImageToPdf from "./pages/ImageToPdf";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import ImageCompressor from "./pages/ImageCompressor";
 
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-          
+          <Route path="/image-resizer" element={<ImageCompressor />}/>          
 
         </Routes>
       </div>      

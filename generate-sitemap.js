@@ -2,8 +2,8 @@
 import fs from "fs";
 import path from "path";
 
-// 🌐 তোমার লাইভ ডোমেইন (deploy করার পর update করবে)
-const BASE_URL = "https://yourdomain.com"; // 🟡 Example: https://allinonetools.vercel.app
+// domain address
+const BASE_URL = "https://easypickplaza.com";
 
 // 🧭 React page folder path (frontend/src/pages)
 const PAGES_DIR = path.join(process.cwd(), "src", "pages");

@@ -1,58 +1,64 @@
+// src/components/MetaManager.jsx
 import React from "react";
 import { Helmet } from "react-helmet";
 
-/**
- * ✅ MetaManager Component
- * সহজভাবে যেকোনো পেজে SEO meta tag, OG, Twitter card এবং canonical link handle করবে।
- *
- * Example:
- * <MetaManager
- *   title="Free Image to PDF Converter | All-in-One Tools"
- *   description="Convert your images into high-quality PDF files instantly. Free online image to PDF converter — no signup required!"
- *   keywords="image to pdf, convert image to pdf, free pdf tool"
- *   url="https://yourdomain.com/img-to-pdf"
- * />
- */
-
 export default function MetaManager({
-  title = "All-in-One Tools | Free Online Utilities",
-  description = "All-in-One Tools offers free online tools like QR Generator, Age Calculator, and Image to PDF Converter — fast, secure, and mobile-friendly.",
-  keywords = "free tools, qr generator, pdf converter, age calculator, online utilities",
-  url = "https://yourdomain.com",
-  image = "https://yourdomain.com/og-image.jpg",
+  title,
+  description,
+  keywords,
+  url,
+  image,
 }) {
+  const siteName = "EasyPick Plaza";
+  const defaultImage =
+    image || "https://easypickplaza.com/assets/og-image.jpg"; // <-- চাইলে custom image ব্যবহার করো
+
   return (
     <Helmet>
-      {/* 🧠 Basic SEO */}
-      <title>{title}</title>
+      {/* 🔹 Basic SEO Meta */}
+      <title>{title ? `${title} | ${siteName}` : siteName}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
-      <link rel="canonical" href={url} />
+      <meta name="author" content="MamunTech" />
+      <meta name="robots" content="index, follow" />
+      <meta name="language" content="English" />
+      <meta name="revisit-after" content="7 days" />
 
-      {/* 🧾 Open Graph / Facebook */}
-      <meta property="og:type" content="website" />
-      <meta property="og:title" content={title} />
+      {/* 🔹 Open Graph (for Facebook, WhatsApp) */}
+      <meta property="og:title" content={title || siteName} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
-      <meta property="og:url" content={url} />
-      <meta property="og:site_name" content="All-in-One Tools" />
+      <meta property="og:image" content={defaultImage} />
+      <meta property="og:url" content={url || "https://easypickplaza.com"} />
+      <meta property="og:type" content="website" />
+      <meta property="og:site_name" content={siteName} />
 
-      {/* 🐦 Twitter Card */}
+      {/* 🔹 Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
+      <meta name="twitter:title" content={title || siteName} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image} />
+      <meta name="twitter:image" content={defaultImage} />
+      <meta name="twitter:site" content="@EasyPickPlaza" />
 
-      {/* ✅ Schema Markup (optional but good for SEO) */}
+      {/* 🔹 Canonical Link */}
+      <link rel="canonical" href={url || "https://easypickplaza.com"} />
+
+      {/* 🔹 Favicon */}
+      <link rel="icon" href="/favicon.ico" />
+
+      {/* 🔹 JSON-LD Structured Data for SEO */}
       <script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "WebApplication",
-          name: "All-in-One Tools",
-          description,
-          url,
-          applicationCategory: "Utilities",
-          operatingSystem: "All",
+          "@type": "WebSite",
+          name: siteName,
+          url: "https://easypickplaza.com",
+          potentialAction: {
+            "@type": "SearchAction",
+            target: "https://easypickplaza.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string",
+          },
+          description:
+            "EasyPick Plaza is a free online tools platform that helps you convert images to PDF, generate QR codes, calculate age, and more.",
         })}
       </script>
     </Helmet>

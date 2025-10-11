@@ -66,3 +66,4 @@ backup/
 # If using React + Express combo
 frontend/build/
 backend/node_modules/
+.vercel

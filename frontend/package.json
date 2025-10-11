@@ -8,10 +8,11 @@
     "generate-sitemap": "node ../generate-sitemap.js",
     "build": "npm run generate-sitemap && vite build",
     "lint": "eslint .",
-    "preview": "vite preview" 
+    "preview": "vite preview"
   },
   "dependencies": {
     "axios": "^1.12.2",
+    "browser-image-compression": "^2.0.2",
     "emailjs-com": "^3.2.0",
     "framer-motion": "^12.23.24",
     "jspdf": "^3.0.3",

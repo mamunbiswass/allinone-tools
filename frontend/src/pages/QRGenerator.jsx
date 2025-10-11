@@ -11,7 +11,6 @@ import {
   Info,
   Image,
 } from "lucide-react";
-import axios from "axios";
 import { Helmet } from "react-helmet";
 import MetaManager from "../components/MetaManager";
 
@@ -99,15 +98,7 @@ export default function QRGenerator() {
     else setError("");
   };
 
-  // 🔹 Activity Log API (Backend Integration)
-  useEffect(() => {
-    axios
-      .post("http://localhost:5000/api/activity/log", {
-        tool_name: "QR Generator",
-      })
-      .catch((err) => console.error("Activity Log Failed:", err));
-  }, []);
-
+ 
   const tabs = [
     { id: "url", label: "URL", icon: <Link size={18} /> },
     { id: "contact", label: "Contact", icon: <User size={18} /> },
@@ -119,11 +110,12 @@ export default function QRGenerator() {
   return (
     <>
     <MetaManager
-        title="Free QR Code Generator | All-in-One Tools"
-        description="Create QR codes easily for any text, link, or message. Download instantly — 100% free and secure!"
-        keywords="qr code generator, qr code online, free qr tool, qr maker"
-        url="https://yourdomain.com/qr-generator"
-      />
+      title="QR Code Generator Online"
+      description="Create QR codes instantly from text, links, or contact info — free and secure at EasyPick Plaza."
+      keywords="qr code generator, create qr code, free qr tool, easy pick plaza"
+      url="https://easypickplaza.com/qr-generator"
+    />
+
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-gray-50 via-indigo-50 to-cyan-100 p-6 pt-20">
       {/* ✅ SEO Meta */}
       <Helmet>

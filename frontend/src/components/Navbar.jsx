@@ -28,6 +28,9 @@ export default function Navbar() {
             <Link to="/img-to-pdf" className="hover:text-gray-200 transition">
               Image to PDF
             </Link>
+            <Link to="/image-resizer" className="hover:text-gray-200 transition">
+              Image Compressor
+            </Link>
 
             {/* 🔒 Login/Signup hidden temporarily */}
             {/* <Link to="/login" ...>Login</Link>
