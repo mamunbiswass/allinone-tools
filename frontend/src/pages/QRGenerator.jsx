@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import axios from "axios";
 import { Helmet } from "react-helmet";
+import MetaManager from "../components/MetaManager";
 
 export default function QRGenerator() {
   const [type, setType] = useState("url");
@@ -116,6 +117,13 @@ export default function QRGenerator() {
   ];
 
   return (
+    <>
+    <MetaManager
+        title="Free QR Code Generator | All-in-One Tools"
+        description="Create QR codes easily for any text, link, or message. Download instantly — 100% free and secure!"
+        keywords="qr code generator, qr code online, free qr tool, qr maker"
+        url="https://yourdomain.com/qr-generator"
+      />
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-gray-50 via-indigo-50 to-cyan-100 p-6 pt-20">
       {/* ✅ SEO Meta */}
       <Helmet>
@@ -129,7 +137,7 @@ export default function QRGenerator() {
       {/* Main Card */}
       <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-lg transform hover:scale-[1.02] transition-all">
         <h1 className="text-3xl font-bold text-center text-indigo-700 mb-6">
-          🎨 Premium QR Code Generator
+          🎨 QR Code Generator
         </h1>
 
         {/* Tabs */}
@@ -286,5 +294,6 @@ export default function QRGenerator() {
         </p>
       </div>
     </div>
+    </>
   );
 }

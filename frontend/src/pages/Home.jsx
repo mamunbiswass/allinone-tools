@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { QrCode, Calendar, FileImage, ChevronRight } from "lucide-react";
+import MetaManager from "../components/MetaManager";
 
 const tools = [
   {
@@ -26,6 +27,13 @@ const tools = [
 
 export default function Home() {
   return (
+    <>
+     <MetaManager
+        title="All-in-One Tools | Free Online Utilities for Everyone"
+        description="Access free tools like QR Code Generator, Image to PDF Converter, and Age Calculator — all in one platform. Fast, ad-free, and easy to use!"
+        keywords="free tools, qr generator, pdf converter, age calculator, online utilities"
+        url="https://yourdomain.com"
+      />
     <div className="bg-gradient-to-br from-indigo-50 via-blue-50 to-cyan-100 min-h-screen pt-24 pb-20 overflow-x-hidden">
       {/* 🌟 Hero Section */}
       <motion.div
@@ -91,5 +99,6 @@ export default function Home() {
 
       
     </div>
+    </>
   );
 }
