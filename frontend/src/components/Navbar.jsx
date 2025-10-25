@@ -10,24 +10,35 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
-          <Link to="/" className="text-2xl font-bold tracking-wide">
-            🧰 All-in-One Tools
-          </Link>
+          <div className="logo">
+            <Link className="flex items-center gap-2" to="/">
+              <img src="/logo.svg" alt="QuickTools Logo" className="w-8 h-8" />       
+ 
+            <h1 className="text-xl font-bold text-white tracking-wide">QuickTools</h1>
+             </Link>
+          </div>         
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6 items-center">
             <Link to="/" className="hover:text-gray-200 transition">
               Home
             </Link>
-            <Link to="/qr-generator" className="hover:text-gray-200 transition">
-              QR Generator
+            <Link to="/qrgenerator" className="hover:text-gray-200 transition">
+              QR & Barcode Generator
             </Link>
-            <Link to="/age-calculator" className="hover:text-gray-200 transition">
+            <Link to="/agecalculator" className="hover:text-gray-200 transition">
               Age Calculator
             </Link>
-            <Link to="/img-to-pdf" className="hover:text-gray-200 transition">
+            <Link to="/imagetopdf" className="hover:text-gray-200 transition">
               Image to PDF
             </Link>
+            <Link to="/pdftoimage" className="hover:text-gray-200 transition">
+              PDF to Image
+            </Link>            
+            <Link to="/imagecompressor" className="hover:text-gray-200 transition">
+              Image Compressor
+            </Link>
+            <Link to="/texttospeech" className="hover:text-gray-200 transition">Text To Speech</Link>
 
             {/* 🔒 Login/Signup hidden temporarily */}
             {/* <Link to="/login" ...>Login</Link>
@@ -52,15 +63,23 @@ export default function Navbar() {
           <Link to="/" onClick={() => setMenuOpen(false)} className="block hover:text-gray-200">
             Home
           </Link>
-          <Link to="/qr-generator" onClick={() => setMenuOpen(false)} className="block hover:text-gray-200">
+          <Link to="/qrgenerator" onClick={() => setMenuOpen(false)} className="block hover:text-gray-200">
             QR Generator
           </Link>
-          <Link to="/age-calculator" onClick={() => setMenuOpen(false)} className="block hover:text-gray-200">
+          <Link to="/agecalculator" onClick={() => setMenuOpen(false)} className="block hover:text-gray-200">
             Age Calculator
           </Link>
-          <Link to="/img-to-pdf" onClick={() => setMenuOpen(false)} className="block hover:text-gray-200">
+          <Link to="/imagetopdf" onClick={() => setMenuOpen(false)} className="block hover:text-gray-200">
             Image to PDF
           </Link>
+           <Link to="/pdftoimage" onClick={() => setMenuOpen(false)} className="block hover:text-gray-200">
+            PDF to Image
+          </Link>
+          
+          <Link to="/imagecompressor" onClick={() => setMenuOpen(false)} className="block hover:text-gray-200">
+              Image Compressor
+            </Link>
+          <Link to="/texttospeech" onClick={() => setMenuOpen(false)} className="block hover:text-gray-200">Text To Speech</Link>
         </div>
       )}
     </nav>

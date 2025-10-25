@@ -113,11 +113,12 @@ export default function ImageToPdf() {
   return (
     <>
       <MetaManager
-        title="Free Image to PDF Converter | All-in-One Tools"
+        title="Free Image to PDF Converter | QuickTools"
         description="Convert your images into high-quality PDF files instantly. Free online image to PDF converter — no signup required!"
-        keywords="image to pdf, convert image to pdf, free pdf tool, photo to pdf"
-        url="https://yourdomain.com/img-to-pdf"
+        keywords="image to pdf, convert image to pdf, photo to pdf, easy pick plaza tools"
+        url="https://quicktoolspro.in/imagetopdf"
       />
+
 
       <div className="min-h-screen pt-20 flex flex-col justify-center items-center bg-gradient-to-br from-blue-50 via-cyan-50 to-green-100 p-4">
         <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-lg transform hover:scale-[1.02] transition-all">

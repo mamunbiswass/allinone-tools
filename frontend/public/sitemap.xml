@@ -1,44 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://yourdomain.com/about</loc>
-    <lastmod>2025-10-11</lastmod>
+    <loc>https://quicktoolspro.in/about</loc>
+    <lastmod>2025-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/agecalculator</loc>
-    <lastmod>2025-10-11</lastmod>
+    <loc>https://quicktoolspro.in/agecalculator</loc>
+    <lastmod>2025-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/contact</loc>
-    <lastmod>2025-10-11</lastmod>
+    <loc>https://quicktoolspro.in/contact</loc>
+    <lastmod>2025-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/</loc>
-    <lastmod>2025-10-11</lastmod>
+    <loc>https://quicktoolspro.in</loc>
+    <lastmod>2025-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/imagetopdf</loc>
-    <lastmod>2025-10-11</lastmod>
+    <loc>https://quicktoolspro.in/imagecompressor</loc>
+    <lastmod>2025-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/privacypolicy</loc>
-    <lastmod>2025-10-11</lastmod>
+    <loc>https://quicktoolspro.in/imagetopdf</loc>
+    <lastmod>2025-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/qrgenerator</loc>
-    <lastmod>2025-10-11</lastmod>
+    <loc>https://quicktoolspro.in/pdftoimage</loc>
+    <lastmod>2025-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://quicktoolspro.in/privacypolicy</loc>
+    <lastmod>2025-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://quicktoolspro.in/qrgenerator</loc>
+    <lastmod>2025-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://quicktoolspro.in/texttospeech</loc>
+    <lastmod>2025-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

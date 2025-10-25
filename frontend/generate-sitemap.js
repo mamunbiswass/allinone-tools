@@ -1,11 +1,10 @@
-// ✅ generate-sitemap.js
 import fs from "fs";
 import path from "path";
 
-// 🌐 তোমার লাইভ ডোমেইন (deploy করার পর update করবে)
-const BASE_URL = "https://yourdomain.com"; // 🟡 Example: https://allinonetools.vercel.app
+// ✅ Domain name (শেষে "/" থাকবে না)
+const BASE_URL = "https://quicktoolspro.in";
 
-// 🧭 React page folder path (frontend/src/pages)
+// 📁 React page folder path
 const PAGES_DIR = path.join(process.cwd(), "src", "pages");
 
 // 🧩 Function: সব page থেকে route বের করা
@@ -28,7 +27,7 @@ function getRoutesFromPages(dir) {
       let route = "/" + file.replace(".jsx", "").toLowerCase();
 
       // 🏠 Home page handle
-      if (["home.jsx", "index.jsx"].includes(file.toLowerCase())) route = "/";
+      if (["home.jsx", "index.jsx"].includes(file.toLowerCase())) route = "";
 
       routes.push(route);
     }
@@ -50,7 +49,7 @@ routes.forEach((route) => {
   xml += `    <loc>${BASE_URL}${route}</loc>\n`;
   xml += `    <lastmod>${today}</lastmod>\n`;
   xml += `    <changefreq>weekly</changefreq>\n`;
-  xml += `    <priority>${route === "/" ? "1.0" : "0.8"}</priority>\n`;
+  xml += `    <priority>${route === "" ? "1.0" : "0.8"}</priority>\n`;
   xml += `  </url>\n`;
 });
 
