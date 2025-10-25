@@ -8,7 +8,7 @@ export default function Footer() {
         {/* 👨‍💻 Left Section - Developer Info */}
         <div className="text-center md:text-left">
           <p className="text-sm">
-            © {new Date().getFullYear()} <span className="font-semibold text-white">All-in-One Tools</span> | Developed by{" "}
+            © {new Date().getFullYear()} <span className="font-semibold text-white">QuickTools</span> | Developed by{" "}
             <a
               href="https://www.linkedin.com/in/mamunbiswas/"
               target="_blank"
@@ -41,7 +41,7 @@ export default function Footer() {
             Contact
           </Link>
           <Link
-            to="/privacy-policy"
+            to="/privacypolicy"
             className="hover:text-indigo-400 transition"
           >
             Privacy Policy

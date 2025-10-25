@@ -9,38 +9,62 @@ export default function MetaManager({
   url,
   image,
 }) {
-  const siteName = "EasyPick Plaza";
+  const siteName = "QuickTools | Free Online Utilities by QuickTools Pro";
   const defaultImage =
-    image || "https://easypickplaza.com/assets/og-image.jpg"; // <-- চাইলে custom image ব্যবহার করো
+    image || "https://quicktoolspro.in/quicktools-og.jpg";
 
   return (
     <Helmet>
       {/* 🔹 Basic SEO Meta */}
       <title>{title ? `${title} | ${siteName}` : siteName}</title>
-      <meta name="description" content={description} />
-      <meta name="keywords" content={keywords} />
+      <meta
+        name="description"
+        content={
+          description ||
+          "QuickTools by QuickTools Pro — a free online tools platform to create QR codes, convert images to PDF, calculate age, compress images, and more."
+        }
+      />
+      <meta
+        name="keywords"
+        content={
+          keywords ||
+          "QuickTools, free tools, online utilities, image to pdf, qr code generator, image compressor, age calculator, easy pick plaza"
+        }
+      />
       <meta name="author" content="MamunTech" />
       <meta name="robots" content="index, follow" />
       <meta name="language" content="English" />
       <meta name="revisit-after" content="7 days" />
 
-      {/* 🔹 Open Graph (for Facebook, WhatsApp) */}
+      {/* 🔹 Open Graph (Facebook, WhatsApp, etc.) */}
       <meta property="og:title" content={title || siteName} />
-      <meta property="og:description" content={description} />
+      <meta
+        property="og:description"
+        content={
+          description ||
+          "QuickTools — Simple, fast, and free online tools to make your daily digital tasks easier."
+        }
+      />
       <meta property="og:image" content={defaultImage} />
-      <meta property="og:url" content={url || "https://easypickplaza.com"} />
+      <meta property="og:url" content={url || "https://quicktoolspro.in/"} />
       <meta property="og:type" content="website" />
-      <meta property="og:site_name" content={siteName} />
+      <meta property="og:site_name" content="QuickTools" />
 
       {/* 🔹 Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title || siteName} />
-      <meta name="twitter:description" content={description} />
+      <meta
+        name="twitter:description"
+        content={
+          description ||
+          "Use QuickTools to convert, calculate, and create — all in one platform!"
+        }
+      />
       <meta name="twitter:image" content={defaultImage} />
       <meta name="twitter:site" content="@EasyPickPlaza" />
 
       {/* 🔹 Canonical Link */}
-      <link rel="canonical" href={url || "https://easypickplaza.com"} />
+      <link rel="canonical" href={url || "https://quicktoolspro.in/"} />
 
       {/* 🔹 Favicon */}
       <link rel="icon" href="/favicon.ico" />
@@ -50,15 +74,21 @@ export default function MetaManager({
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebSite",
-          name: siteName,
-          url: "https://easypickplaza.com",
+          name: "QuickTools",
+          alternateName: "QuickTools Pro Quick Tools",
+          url: "https://quicktoolspro.in/",
+          description:
+            "QuickTools by QuickTools Pro is your go-to online toolkit — convert images, generate QR codes, compress photos, and calculate age instantly.",
           potentialAction: {
             "@type": "SearchAction",
-            target: "https://easypickplaza.com/search?q={search_term_string}",
+            target: "https://quicktoolspro.in//search?q={search_term_string}",
             "query-input": "required name=search_term_string",
           },
-          description:
-            "EasyPick Plaza is a free online tools platform that helps you convert images to PDF, generate QR codes, calculate age, and more.",
+          sameAs: [
+            "https://www.facebook.com/quicktoolspro",
+            "https://twitter.com/quicktoolspro",
+            "https://www.instagram.com/quicktoolspro",
+          ],
         })}
       </script>
     </Helmet>

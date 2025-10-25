@@ -76,10 +76,10 @@ export default function AgeCalculator() {
   return (
     <>
      <MetaManager
-        title="Free Age Calculator | All-in-One Tools"
+        title="Free Age Calculator | QuickTools"
         description="Calculate your exact age in years, months, and days instantly. Free online age calculator with accurate results."
         keywords="age calculator, birthday calculator, date of birth, calculate age online"
-        url="https://yourdomain.com/age-calculator"
+        url="https://quicktoolspro.in/agecalculator"
       />
     <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-indigo-100 via-blue-50 to-cyan-100 pt-20 pb-10 p-4">
       <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md transition-transform transform hover:scale-[1.02]">

@@ -1,57 +1,90 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { QRCodeCanvas } from "qrcode.react";
+import Barcode from "react-barcode";
 import {
   Download,
   Copy,
+  QrCode,
+  ScanLine,
   Link,
   User,
   Mail,
   Phone,
   FileText,
-  Info,
-  Image,
+  Wifi,
+  MessageCircle,
+  IndianRupee,
 } from "lucide-react";
-import { Helmet } from "react-helmet";
+import { toast } from "react-toastify";
 import MetaManager from "../components/MetaManager";
+import QRHelpSection from "../components/QRHelpSection";
 
 export default function QRGenerator() {
-  const [type, setType] = useState("url");
+  const [mainTab, setMainTab] = useState("qr");
+  const [qrType, setQrType] = useState("vcard");
   const [input, setInput] = useState("");
-  const [error, setError] = useState("");
   const [fgColor, setFgColor] = useState("#000000");
   const [bgColor, setBgColor] = useState("#ffffff");
   const [logo, setLogo] = useState(null);
+  const [barcodeType, setBarcodeType] = useState("CODE128");
   const qrRef = useRef();
 
-  // 🧾 Validation function
-  const validateInput = () => {
-    if (!input.trim()) return "⚠️ Please enter a value.";
+  // 🧩 State for vCard
+  const [vcard, setVcard] = useState({
+    firstName: "",
+    lastName: "",
+    mobile: "",
+    fax: "",
+    email: "",
+    company: "",
+    job: "",
+    street: "",
+    city: "",
+    state: "",
+    zip: "",
+    country: "",
+    website: "",
+  });
 
-    switch (type) {
-      case "url":
-        if (!/^https?:\/\/[^\s$.?#].[^\s]*$/i.test(input))
-          return "❌ Please enter a valid URL (e.g. https://example.com)";
-        break;
-      case "email":
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input))
-          return "❌ Please enter a valid email address.";
-        break;
-      case "phone":
-        if (!/^[\d+\-\s]{6,15}$/.test(input))
-          return "❌ Please enter a valid phone number.";
-        break;
-      default:
-        break;
-    }
-    return "";
-  };
+  // 🧩 State for UPI
+  const [upi, setUpi] = useState({
+    upiId: "",
+    name: "",
+    amount: "",
+  });
 
+  // ✅ Generate QR Value
   const generateValue = () => {
-    switch (type) {
+    switch (qrType) {
+      case "vcard":
+        return `BEGIN:VCARD
+VERSION:3.0
+N:${vcard.lastName};${vcard.firstName};;;
+FN:${vcard.firstName} ${vcard.lastName}
+ORG:${vcard.company}
+TITLE:${vcard.job}
+TEL;TYPE=CELL:${vcard.mobile}
+TEL;TYPE=FAX:${vcard.fax}
+EMAIL;TYPE=INTERNET:${vcard.email}
+ADR;TYPE=WORK;LABEL="${vcard.street}, ${vcard.city}, ${vcard.state}, ${vcard.zip}, ${vcard.country}":;;${vcard.street};${vcard.city};${vcard.state};${vcard.zip};${vcard.country}
+URL:${vcard.website}
+END:VCARD`;
+
+      case "upi":
+        const { upiId, name, amount } = upi;
+        if (!upiId) return "";
+        return `upi://pay?pa=${upiId}&pn=${encodeURIComponent(
+          name
+        )}&am=${amount}&cu=INR`;
+
       case "email":
         return `mailto:${input}`;
       case "phone":
         return `tel:${input}`;
+      case "sms":
+        return `sms:${input}`;
+      case "wifi":
+        return `WIFI:${input}`;
       case "url":
         return input.startsWith("http") ? input : `https://${input}`;
       default:
@@ -59,233 +92,452 @@ export default function QRGenerator() {
     }
   };
 
-  // ✅ Download QR
+  // ✅ Download QR / Barcode
   const handleDownload = () => {
-    const canvas = qrRef.current.querySelector("canvas");
-    const link = document.createElement("a");
-    link.download = `${type}-qr-${Date.now()}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
+    if (mainTab === "barcode") {
+      const svg = qrRef.current.querySelector("svg");
+      if (!svg) return toast.warning("⚠️ Please generate a barcode first!");
+      const canvas = document.createElement("canvas");
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const img = new Image();
+      const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      img.onload = () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        URL.revokeObjectURL(url);
+        const link = document.createElement("a");
+        link.download = `barcode-${Date.now()}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        toast.success("📦 Barcode downloaded successfully!");
+      };
+      img.src = url;
+    } else {
+      const canvas = qrRef.current.querySelector("canvas");
+      if (!canvas) return toast.warning("⚠️ Please generate a QR code first!");
+      const link = document.createElement("a");
+      link.download = `${qrType}-qr-${Date.now()}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+      toast.success("✅ QR Code downloaded successfully!");
+    }
   };
 
-  // ✅ Copy text
-  const handleCopy = () => {
-    if (!input) return;
-    navigator.clipboard.writeText(input);
-    alert("✅ Text copied to clipboard!");
-  };
+  // ✅ Copy Data
+const handleCopy = () => {
+  const data = mainTab === "barcode" ? input : generateValue();
 
-  // ✅ Logo upload
+  if (!data) {
+    toast.warning("⚠️ Please generate a code first!");
+    return;
+  }
+
+  navigator.clipboard.writeText(data).then(() => {
+    if (mainTab === "barcode") {
+      toast.success("✅ Barcode data copied successfully!");
+    } else if (qrType === "url") {
+      toast.success("🔗 QR link copied successfully!");
+    } else if (qrType === "upi") {
+      toast.success("💰 UPI payment link copied successfully!");
+    } else {
+      toast.success("📋 QR data copied successfully!");
+    }
+  });
+};
+
+  // ✅ Logo Upload
   const handleLogoUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      alert("⚠️ Please upload a valid image file!");
-      return;
-    }
-    if (file.size > 1024 * 1024) {
-      alert("⚠️ Image size should be below 1MB");
-      return;
-    }
     const reader = new FileReader();
     reader.onloadend = () => setLogo(reader.result);
     reader.readAsDataURL(file);
+    toast.success("🖼️ Logo added successfully!");
   };
 
-  const handleGenerate = () => {
-    const err = validateInput();
-    if (err) setError(err);
-    else setError("");
-  };
-
- 
-  const tabs = [
-    { id: "url", label: "URL", icon: <Link size={18} /> },
-    { id: "contact", label: "Contact", icon: <User size={18} /> },
-    { id: "text", label: "Text", icon: <FileText size={18} /> },
-    { id: "email", label: "Email", icon: <Mail size={18} /> },
-    { id: "phone", label: "Phone", icon: <Phone size={18} /> },
+  // Tabs
+  const qrTabs = [
+    { id: "vcard", label: "vCard", icon: <User size={16} /> },
+    { id: "url", label: "URL", icon: <Link size={16} /> },
+    { id: "text", label: "Text", icon: <FileText size={16} /> },
+    { id: "email", label: "Email", icon: <Mail size={16} /> },
+    { id: "phone", label: "Phone", icon: <Phone size={16} /> },
+    { id: "sms", label: "SMS", icon: <MessageCircle size={16} /> },
+    { id: "wifi", label: "WiFi", icon: <Wifi size={16} /> },
+    { id: "upi", label: "UPI Payment", icon: <IndianRupee size={16} /> },
   ];
 
   return (
     <>
-    <MetaManager
-      title="QR Code Generator Online"
-      description="Create QR codes instantly from text, links, or contact info — free and secure at EasyPick Plaza."
-      keywords="qr code generator, create qr code, free qr tool, easy pick plaza"
-      url="https://easypickplaza.com/qr-generator"
-    />
+      <MetaManager
+        title="QR & Barcode Generator | QuickTools Pro"
+        description="Generate QR codes for contacts, links, WiFi, and even UPI payments. Also create Barcodes easily — free and secure by QuickTools Pro."
+        keywords="QR generator, UPI QR, Barcode generator, vCard QR, WiFi QR, QuickTools Pro"
+        url="https://quicktoolspro.in/qrgenerator"
+      />
 
-    <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-gray-50 via-indigo-50 to-cyan-100 p-6 pt-20">
-      {/* ✅ SEO Meta */}
-      <Helmet>
-        <title>Free QR Code Generator | All-in-One Tools</title>
-        <meta
-          name="description"
-          content="Create colorful and professional QR codes instantly for free — URL, Text, Email, or Phone. Customize colors and add logos with our easy QR code generator."
-        />
-      </Helmet>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-indigo-50 to-cyan-100 p-6 pt-24">
+        <div className="bg-white shadow-2xl rounded-2xl p-8 max-w-6xl mx-auto">
+          <h1 className="text-3xl font-extrabold text-center text-indigo-700 mb-8">
+            🎨 QR & Barcode Generator
+          </h1>
 
-      {/* Main Card */}
-      <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-lg transform hover:scale-[1.02] transition-all">
-        <h1 className="text-3xl font-bold text-center text-indigo-700 mb-6">
-          🎨 QR Code Generator
-        </h1>
-
-        {/* Tabs */}
-        <div className="flex justify-between border-b border-gray-200 mb-5">
-          {tabs.map((tab) => (
+          {/* Main Tabs */}
+          <div className="flex justify-center gap-6 border-b pb-3 mb-8">
             <button
-              key={tab.id}
-              onClick={() => {
-                setType(tab.id);
-                setInput("");
-                setError("");
-              }}
-              className={`flex flex-col items-center text-sm font-medium p-2 rounded-md transition ${
-                type === tab.id
+              className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium ${
+                mainTab === "qr"
                   ? "text-indigo-700 border-b-2 border-indigo-600"
-                  : "text-gray-500 hover:text-indigo-500"
+                  : "text-gray-500 hover:text-indigo-600"
               }`}
+              onClick={() => setMainTab("qr")}
             >
-              {tab.icon}
-              {tab.label}
+              <QrCode size={18} /> QR Code
             </button>
-          ))}
-        </div>
-
-        {/* Input */}
-        <input
-          type="text"
-          placeholder={
-            type === "url"
-              ? "https://example.com"
-              : type === "email"
-              ? "example@mail.com"
-              : type === "phone"
-              ? "+91 9876543210"
-              : "Enter your text or info"
-          }
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="w-full border border-gray-300 rounded-md p-3 outline-none mb-2 focus:ring-2 focus:ring-indigo-400"
-        />
-
-        {/* Validation Error */}
-        {error && <p className="text-red-600 text-sm mb-3">{error}</p>}
-
-        {/* Color Pickers */}
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-600">
-              🎨 Foreground:
-            </label>
-            <input
-              type="color"
-              value={fgColor}
-              onChange={(e) => setFgColor(e.target.value)}
-            />
+            <button
+              className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium ${
+                mainTab === "barcode"
+                  ? "text-indigo-700 border-b-2 border-indigo-600"
+                  : "text-gray-500 hover:text-indigo-600"
+              }`}
+              onClick={() => setMainTab("barcode")}
+            >
+              <ScanLine size={18} /> Barcode
+            </button>
           </div>
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-600">
-              🖼️ Background:
-            </label>
-            <input
-              type="color"
-              value={bgColor}
-              onChange={(e) => setBgColor(e.target.value)}
-            />
-          </div>
-        </div>
 
-        {/* Logo Upload */}
-        <div className="flex flex-col items-start mb-4">
-          <label className="text-sm font-medium text-gray-600 mb-1">
-            📸 Add Logo (optional):
-          </label>
-          <input type="file" accept="image/*" onChange={handleLogoUpload} />
-          {logo && (
-            <img
-              src={logo}
-              alt="logo"
-              className="mt-2 w-16 h-16 object-cover rounded-md border"
-            />
-          )}
-        </div>
-
-        {/* Generate Button */}
-        <button
-          onClick={handleGenerate}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg shadow transition mb-5"
-        >
-          Generate QR Code
-        </button>
-
-        {/* QR Preview */}
-        <div
-          className="flex flex-col items-center justify-center mt-6 sm:mt-10 space-y-4"
-          ref={qrRef}
-        >
-          {input && !error ? (
+          {/* ---------------- QR Section ---------------- */}
+          {mainTab === "qr" && (
             <>
-              <div className="relative bg-white p-4 rounded-xl shadow-inner">
-                <QRCodeCanvas
-                  value={generateValue()}
-                  size={200}
-                  fgColor={fgColor}
-                  bgColor={bgColor}
-                  imageSettings={
-                    logo
-                      ? { src: logo, height: 40, width: 40, excavate: true }
-                      : undefined
-                  }
-                />
+              <div className="flex flex-wrap justify-center border-b pb-3 mb-6 gap-3">
+                {qrTabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setQrType(tab.id)}
+                    className={`flex items-center gap-2 px-3 py-2 text-sm rounded-md font-medium transition-all ${
+                      qrType === tab.id
+                        ? "text-indigo-700 border-b-2 border-indigo-600"
+                        : "text-gray-500 hover:text-indigo-600"
+                    }`}
+                  >
+                    {tab.icon}
+                    {tab.label}
+                  </button>
+                ))}
               </div>
 
-              <div className="flex gap-4">
-                <button
-                  onClick={handleCopy}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+              {/* QR Inputs */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div>
+                  {qrType === "vcard" ? (
+                    <>
+                      <div className="space-y-3">
+                        <div className="grid grid-cols-2 gap-3">
+                          <input
+                            type="text"
+                            placeholder="First Name"
+                            value={vcard.firstName}
+                            onChange={(e) =>
+                              setVcard({ ...vcard, firstName: e.target.value })
+                            }
+                            className="border p-2 rounded-md"
+                          />
+                          <input
+                            type="text"
+                            placeholder="Last Name"
+                            value={vcard.lastName}
+                            onChange={(e) =>
+                              setVcard({ ...vcard, lastName: e.target.value })
+                            }
+                            className="border p-2 rounded-md"
+                          />
+                        </div>
+
+                        <input
+                          type="email"
+                          placeholder="Email"
+                          value={vcard.email}
+                          onChange={(e) =>
+                            setVcard({ ...vcard, email: e.target.value })
+                          }
+                          className="border p-2 rounded-md w-full"
+                        />
+
+                        <div className="grid grid-cols-2 gap-3">
+                          <input
+                            type="text"
+                            placeholder="Mobile"
+                            value={vcard.mobile}
+                            onChange={(e) =>
+                              setVcard({ ...vcard, mobile: e.target.value })
+                            }
+                            className="border p-2 rounded-md"
+                          />
+                          <input
+                            type="text"
+                            placeholder="Fax"
+                            value={vcard.fax}
+                            onChange={(e) =>
+                              setVcard({ ...vcard, fax: e.target.value })
+                            }
+                            className="border p-2 rounded-md"
+                          />
+                        </div>
+
+                        <input
+                          type="text"
+                          placeholder="Company"
+                          value={vcard.company}
+                          onChange={(e) =>
+                            setVcard({ ...vcard, company: e.target.value })
+                          }
+                          className="border p-2 rounded-md w-full"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Job Title"
+                          value={vcard.job}
+                          onChange={(e) =>
+                            setVcard({ ...vcard, job: e.target.value })
+                          }
+                          className="border p-2 rounded-md w-full"
+                        />
+
+                        <input
+                          type="text"
+                          placeholder="Street Address"
+                          value={vcard.street}
+                          onChange={(e) =>
+                            setVcard({ ...vcard, street: e.target.value })
+                          }
+                          className="border p-2 rounded-md w-full"
+                        />
+
+                        <div className="grid grid-cols-3 gap-3">
+                          <input
+                            type="text"
+                            placeholder="City"
+                            value={vcard.city}
+                            onChange={(e) =>
+                              setVcard({ ...vcard, city: e.target.value })
+                            }
+                            className="border p-2 rounded-md"
+                          />
+                          <input
+                            type="text"
+                            placeholder="State"
+                            value={vcard.state}
+                            onChange={(e) =>
+                              setVcard({ ...vcard, state: e.target.value })
+                            }
+                            className="border p-2 rounded-md"
+                          />
+                          <input
+                            type="text"
+                            placeholder="ZIP"
+                            value={vcard.zip}
+                            onChange={(e) =>
+                              setVcard({ ...vcard, zip: e.target.value })
+                            }
+                            className="border p-2 rounded-md"
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                          <input
+                            type="text"
+                            placeholder="Country"
+                            value={vcard.country}
+                            onChange={(e) =>
+                              setVcard({ ...vcard, country: e.target.value })
+                            }
+                            className="border p-2 rounded-md"
+                          />
+                          <input
+                            type="text"
+                            placeholder="Website"
+                            value={vcard.website}
+                            onChange={(e) =>
+                              setVcard({ ...vcard, website: e.target.value })
+                            }
+                            className="border p-2 rounded-md"
+                          />
+                        </div>
+                      </div>
+                    </>
+                  ) : qrType === "upi" ? (
+                    <>
+                      <input
+                        type="text"
+                        placeholder="Enter UPI ID (e.g. mamun@oksbi)"
+                        value={upi.upiId}
+                        onChange={(e) =>
+                          setUpi({ ...upi, upiId: e.target.value })
+                        }
+                        className="border p-2 rounded-md w-full mb-2"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Receiver Name"
+                        value={upi.name}
+                        onChange={(e) =>
+                          setUpi({ ...upi, name: e.target.value })
+                        }
+                        className="border p-2 rounded-md w-full mb-2"
+                      />
+                      <input
+                        type="number"
+                        placeholder="Amount (optional)"
+                        value={upi.amount}
+                        onChange={(e) =>
+                          setUpi({ ...upi, amount: e.target.value })
+                        }
+                        className="border p-2 rounded-md w-full"
+                      />
+                    </>
+                  ) : (
+                    <input
+                      type="text"
+                      placeholder={`Enter ${qrType} info`}
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      className="border p-2 rounded-md w-full"
+                    />
+                  )}
+
+                  <div className="flex justify-between items-center mt-6">
+                    <div>
+                      <label className="text-sm text-gray-600">🎨 Foreground:</label>
+                      <input
+                        type="color"
+                        value={fgColor}
+                        onChange={(e) => setFgColor(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-gray-600">🖼️ Background:</label>
+                      <input
+                        type="color"
+                        value={bgColor}
+                        onChange={(e) => setBgColor(e.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-3">
+                    <label className="text-sm font-medium text-gray-600">
+                      📸 Add Logo (optional):
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoUpload}
+                    />
+                  </div>
+                </div>
+
+                {/* QR Preview */}
+                <div
+                  ref={qrRef}
+                  className="flex flex-col items-center justify-center bg-gray-50 rounded-xl shadow-inner p-6"
                 >
-                  <Copy size={16} /> Copy
-                </button>
-                <button
-                  onClick={handleDownload}
-                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
-                >
-                  <Download size={16} /> Download
-                </button>
+                  <QRCodeCanvas
+                    value={generateValue()}
+                    size={220}
+                    fgColor={fgColor}
+                    bgColor={bgColor}
+                    imageSettings={
+                      logo
+                        ? { src: logo, height: 50, width: 50, excavate: true }
+                        : undefined
+                    }
+                  />
+                  <div className="flex gap-4 mt-5">
+                    <button
+                      onClick={handleCopy}
+                      className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+                    >
+                      <Copy size={16} /> Copy Link
+                    </button>
+                    <button
+                      onClick={handleDownload}
+                      className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+                    >
+                      <Download size={16} /> Download
+                    </button>
+                  </div>
+                </div>
               </div>
             </>
-          ) : (
-            <p className="text-gray-400 text-sm text-center">
-              Enter valid data and click Generate.
-            </p>
+          )}
+
+          {/* ---------------- Barcode Section ---------------- */}
+          {mainTab === "barcode" && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <div>
+                <input
+                  type="text"
+                  placeholder="Enter Barcode Value (e.g., 8901234567890)"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  className="border p-2 rounded-md w-full mb-3"
+                />
+                <select
+                  value={barcodeType}
+                  onChange={(e) => setBarcodeType(e.target.value)}
+                  className="border p-2 rounded-md w-full"
+                >
+                  <option value="CODE128">Code 128</option>
+                  <option value="EAN13">EAN-13</option>
+                  <option value="UPC">UPC</option>
+                  <option value="CODE39">Code 39</option>
+                </select>
+              </div>
+
+              <div
+                ref={qrRef}
+                className="flex flex-col items-center justify-center bg-gray-50 rounded-xl shadow-inner p-6"
+              >
+                {input ? (
+                  <Barcode
+                    value={input}
+                    format={barcodeType}
+                    width={2}
+                    height={100}
+                    displayValue={true}
+                    background={bgColor}
+                    lineColor={fgColor}
+                  />
+                ) : (
+                  <p className="text-gray-400 text-sm">
+                    Enter a value to generate barcode
+                  </p>
+                )}
+
+                <div className="flex gap-4 mt-5">
+                  <button
+                    onClick={handleCopy}
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+                  >
+                    <Copy size={16} /> Copy
+                  </button>
+                  <button
+                    onClick={handleDownload}
+                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+                  >
+                    <Download size={16} /> Download
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
         </div>
-      </div>
 
-      {/* SEO Section */}
-      <div className="bg-white shadow-lg rounded-xl mt-10 p-6 max-w-3xl text-gray-700">
-        <h2 className="text-2xl font-bold text-indigo-700 flex items-center gap-2 mb-4">
-          <Info size={22} /> How to Create a Free QR Code
-        </h2>
-        <p className="mb-3">
-          You can create colorful and professional QR codes easily in seconds.
-          Choose what type of QR you need — URL, Contact, Text, Email, or Phone —
-          then customize colors and add your logo for branding.
-        </p>
-        <ol className="list-decimal pl-6 space-y-1 mb-3">
-          <li>Select your QR type (URL, Text, etc.)</li>
-          <li>Enter valid data and customize colors.</li>
-          <li>Click “Generate” and download your QR instantly.</li>
-        </ol>
-        <p>
-          Whether you need a QR for your website, business card, or social media — 
-          this tool helps you generate professional QR codes instantly without any sign-up.
-        </p>
+        <QRHelpSection />
       </div>
-    </div>
     </>
   );
 }

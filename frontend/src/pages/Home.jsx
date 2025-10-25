@@ -8,6 +8,8 @@ import {
   Scale,
   ChevronRight,
   Info,
+  Volume2,
+  FileDown,
 } from "lucide-react";
 import MetaManager from "../components/MetaManager";
 
@@ -15,26 +17,39 @@ const tools = [
   {
     name: "QR Code Generator",
     desc: "Create custom QR codes for your links, text, or contacts in seconds.",
-    path: "/qr-generator",
+    path: "/qrgenerator",
     icon: <QrCode className="text-indigo-600" size={36} />,
   },
   {
     name: "Age Calculator",
     desc: "Quickly calculate your exact age in years, months, and days.",
-    path: "/age-calculator",
+    path: "/agecalculator",
     icon: <Calendar className="text-green-600" size={36} />,
   },
   {
     name: "Image to PDF Converter",
     desc: "Convert multiple images into one high-quality PDF file instantly.",
-    path: "/img-to-pdf",
+    path: "/imagetopdf",
     icon: <FileImage className="text-pink-600" size={36} />,
+  },
+  {
+    name: "PDF to Image Converter",
+    desc: "Turn your PDF pages into high-quality PNG or JPG images with one click — fast and secure.",
+    path: "/pdftoimage",
+    icon: <FileDown className="text-cyan-600" size={36} />,
+    isNew: true,
   },
   {
     name: "Image Compressor & Resizer",
     desc: "Compress and resize images without losing quality. Preview before download!",
-    path: "/image-resizer",
+    path: "/imagecompressor",
     icon: <Scale className="text-orange-600" size={36} />,
+  },
+  {
+    name: "Text to Speech (Bangla | Hindi | English)",
+    desc: "Instantly convert your text into natural human-like voices. Listen or download MP3 easily.",
+    path: "/texttospeech",
+    icon: <Volume2 className="text-blue-600" size={36} />,
   },
 ];
 
@@ -42,10 +57,10 @@ export default function Home() {
   return (
     <>
       <MetaManager
-        title="All-in-One Free Online Tools | EasyPick Plaza"
-        description="EasyPick Plaza offers free online tools like Image to PDF converter, QR generator, Image compressor, and age calculator — simple, fast, and secure!"
-        keywords="free tools, online pdf converter, qr code generator, image compressor, image resizer, age calculator, easy pick plaza"
-        url="https://easypickplaza.com"
+        title="QuickTools by QuickTools Pro | Free Online Utilities"
+        description="QuickTools by QuickTools Pro — a free online toolkit offering Text to Speech, Image Compression, QR Code Generation, Age Calculation, PDF to Image, and PDF Conversion. Fast, ad-free, and mobile friendly!"
+        keywords="text to speech bangla, hindi, english, pdf to image, qr code generator, pdf converter, image compressor, quicktools pro"
+        url="https://quicktoolspro.in/"
       />
 
       <div className="bg-gradient-to-br from-indigo-50 via-blue-50 to-cyan-100 min-h-screen pt-24 pb-20 overflow-x-hidden">
@@ -57,7 +72,7 @@ export default function Home() {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-5xl font-extrabold text-indigo-700 mb-4 drop-shadow-sm">
-            🧰 All-in-One Tools
+            QuickTools — Free Online Utilities
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Simplify your digital life with our collection of smart, free, and
@@ -68,7 +83,7 @@ export default function Home() {
 
         {/* ⚙️ Tools Grid */}
         <motion.div
-          className="container mx-auto max-w-5xl grid grid-cols-1 sm:grid-cols-2 gap-8 px-6 justify-center"
+          className="container mx-auto max-w-5xl grid grid-cols-1 sm:grid-cols-2 gap-8 px-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -78,8 +93,13 @@ export default function Home() {
               key={index}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
-              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300"
+              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 relative"
             >
+              {tool.isNew && (
+                <span className="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-semibold px-2 py-1 rounded-full animate-pulse">
+                  NEW 🔥
+                </span>
+              )}
               <div className="flex items-center gap-4 mb-4">
                 {tool.icon}
                 <h2 className="text-2xl font-semibold text-gray-800">
@@ -107,17 +127,17 @@ export default function Home() {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-3xl font-bold text-indigo-700 mb-3">
-            Why Use All-in-One Tools?
+            Why Use QuickTools?
           </h2>
           <p className="text-gray-600 text-lg leading-relaxed">
             We designed this platform to bring all useful tools under one roof —
-            whether you need to generate QR codes, compress images, or convert
-            photos to PDF. It’s 100% free, lightning-fast, and built for
-            everyone 🚀
+            whether you need to generate QR codes, compress images, convert
+            photos to PDF, or listen to your text in natural voice. It’s 100%
+            free, lightning-fast, and built for everyone 🚀
           </p>
         </motion.div>
 
-        {/* 🌍 SEO & Info Section */}
+        {/* 🌍 Info Section */}
         <motion.div
           className="mt-16 max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-lg text-left"
           initial={{ opacity: 0 }}
@@ -125,15 +145,34 @@ export default function Home() {
           transition={{ duration: 0.8 }}
         >
           <h3 className="text-2xl font-bold text-indigo-700 mb-3 flex items-center gap-2">
-            <Info className="text-indigo-600" /> About EasyPick Plaza
+            <Info className="text-indigo-600" /> About QuickTools Pro
           </h3>
           <p className="text-gray-600 leading-relaxed">
-            EasyPick Plaza is your go-to free tool platform designed to make
-            your daily digital tasks simple and efficient. No sign-up, no
-            software installation — just open the site and start working. Tools
-            like <b>QR Generator</b>, <b>Image Compressor</b>,{" "}
-            <b>Age Calculator</b>, and <b>Image to PDF</b> are constantly
-            updated to provide the best user experience. ⚙️
+            Tools like{" "}
+            <Link to="/qrgenerator" className="text-indigo-600 font-semibold">
+              QR Generator
+            </Link>
+            ,{" "}
+            <Link to="/texttospeech" className="text-indigo-600 font-semibold">
+              Text to Speech
+            </Link>
+            ,{" "}
+            <Link to="/pdftoimage" className="text-indigo-600 font-semibold">
+              PDF to Image Converter
+            </Link>
+            ,{" "}
+            <Link to="/imagecompressor" className="text-indigo-600 font-semibold">
+              Image Compressor
+            </Link>
+            ,{" "}
+            <Link to="/agecalculator" className="text-indigo-600 font-semibold">
+              Age Calculator
+            </Link>{" "}
+            and{" "}
+            <Link to="/imagetopdf" className="text-indigo-600 font-semibold">
+              Image to PDF Converter
+            </Link>{" "}
+            are constantly updated to provide the best experience. ⚙️
           </p>
         </motion.div>
       </div>

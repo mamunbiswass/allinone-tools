@@ -113,10 +113,10 @@ export default function ImageToPdf() {
   return (
     <>
       <MetaManager
-        title="Free Image to PDF Converter"
+        title="Free Image to PDF Converter | QuickTools"
         description="Convert your images into high-quality PDF files instantly. Free online image to PDF converter — no signup required!"
         keywords="image to pdf, convert image to pdf, photo to pdf, easy pick plaza tools"
-        url="https://easypickplaza.com/img-to-pdf"
+        url="https://quicktoolspro.in/imagetopdf"
       />
 
 

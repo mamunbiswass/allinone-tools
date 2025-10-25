@@ -122,10 +122,10 @@ export default function ImageResizer() {
   return (
     <>
       <MetaManager
-        title="Free Image Resizer & Compressor with Preview | All-in-One Tools"
+        title="Free Image Resizer & Compressor with Preview | QuickTools "
         description="Resize, compress, and preview your images before downloading. 100% free, secure, and browser-based image resizing tool with quality control and custom dimensions."
         keywords="resize image, image compressor, resize photo, image resizer, image preview, online image converter, image quality reducer"
-        url="https://easypickplaza.com/image-resizer"
+        url="https://quicktoolspro.in/imagecompressor"
       />
 
       <ToastContainer />
